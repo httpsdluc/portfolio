@@ -1,17 +1,13 @@
+import type { VercelRequest, VercelResponse } from "@vercel/node";
+
 /**
  * Vercel serverless function: /api/leetcode
  *
- * Fetches LeetCode stats from LeetCode's GraphQL API and returns them as JSON.
- * This runs on Vercel's servers (no CORS restrictions), not in the browser.
+ * Fetches LeetCode stats from LeetCode's GraphQL API and returns JSON.
+ * Runs on Vercel's servers (no CORS restrictions).
  *
- * Usage from frontend:
+ * Usage from the frontend:
  *   fetch('/api/leetcode?username=dianalucero')
- *
- * Deploy notes:
- *   - Vercel auto-detects files in /api and turns them into endpoints.
- *   - No config required. Push to Vercel and it just works.
- *   - On localhost (Vite dev), this file does NOT run — the frontend
- *     will get a 404 and fall back to a static LeetCode link.
  */
 
 const LEETCODE_QUERY = `
@@ -31,20 +27,11 @@ const LEETCODE_QUERY = `
   }
 `;
 
-interface VercelRequest {
-  query: { username?: string };
-}
-
-interface VercelResponse {
-  status: (code: number) => VercelResponse;
-  json: (data: unknown) => void;
-  setHeader: (key: string, value: string) => void;
-}
-
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  const username = req.query.username ?? "dianalucero";
+  const username =
+    typeof req.query.username === "string" ? req.query.username : "dianalucero";
 
-  // Cache for 10 minutes (reduces load, stats don't change that fast)
+  // Cache at the edge for 10 minutes
   res.setHeader("Cache-Control", "s-maxage=600, stale-while-revalidate");
 
   try {
@@ -52,7 +39,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        // LeetCode requires a browser-like user agent
         "User-Agent":
           "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         Referer: "https://leetcode.com/",
@@ -65,9 +51,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     });
 
     if (!response.ok) {
-      return res.status(response.status).json({
-        error: `LeetCode returned ${response.status}`,
-      });
+      return res
+        .status(response.status)
+        .json({ error: `LeetCode returned ${response.status}` });
     }
 
     const data = (await response.json()) as {
