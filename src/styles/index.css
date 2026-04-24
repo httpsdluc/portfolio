@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;500;600&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* Blue-gray color tokens */
+:root {
+  --ink: #1e2633;
+  --ink-soft: #5d6578;
+  --ink-softer: #8a91a3;
+  --paper: #fafbfc;
+  --panel: #eef2f6;
+
+  --blue: #7ea0b8;
+  --blue-soft: #b5c7d6;
+  --blue-pale: #dde7ef;
+  --blue-wash: #eef3f7;
+
+  --sage-pale: #e4ebe2;
+  --accent: #4a6278;
+}
+
+html, body, #root {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' shape-rendering='crispEdges'%3E%3Cpath fill='%231e2633' d='M3 2h1v1H3zM3 3h2v1H3zM3 4h3v1H3zM3 5h4v1H3zM3 6h5v1H3zM3 7h6v1H3zM3 8h7v1H3zM3 9h8v1H3zM3 10h9v1H3zM3 11h10v1H3zM3 12h6v1H3zM3 13h3v1H3zM6 13h2v1H6zM3 14h2v1H3zM7 14h2v1H7zM3 15h1v1H3zM8 15h2v1H8zM9 16h2v1H9z'/%3E%3Cpath fill='%237ea0b8' d='M4 3h1v1H4zM4 4h2v1H4zM4 5h3v1H4zM4 6h4v1H4zM4 7h5v1H4zM4 8h6v1H4zM4 9h7v1H4zM4 10h8v1H4zM4 11h9v1H4zM4 12h5v1H4zM4 13h2v1H4z'/%3E%3C/svg%3E") 3 2, auto;
+}
+
+a, button, [role="button"], input[type="submit"], input[type="checkbox"], input[type="radio"] {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' shape-rendering='crispEdges'%3E%3Cpath fill='%231e2633' d='M10 3h4v1h-4zM9 4h1v1H9zM14 4h1v1h-1zM8 5h1v1H8zM15 5h1v1h-1zM8 6h1v1H8zM15 6h1v1h-1zM8 7h1v1H8zM15 7h1v1h-1zM5 8h3v1H5zM15 8h1v1h-1zM4 9h1v1H4zM15 9h1v1h-1zM4 10h1v1H4zM15 10h1v1h-1zM5 11h1v1H5zM15 11h1v1h-1zM6 12h1v1H6zM15 12h1v1h-1zM7 13h1v1H7zM15 13h1v1h-1zM8 14h8v1H8zM9 15h6v1H9z'/%3E%3Cpath fill='%237ea0b8' d='M10 4h4v1h-4zM9 5h6v1H9zM9 6h6v1H9zM9 7h6v1H9zM8 8h7v1H8zM5 9h10v1H5zM5 10h10v1H5zM6 11h9v1H6zM7 12h8v1H7zM8 13h7v1H8z'/%3E%3C/svg%3E") 12 2, pointer;
+}
+
+input[type="text"], input[type="email"], input:not([type]), textarea {
+  cursor: text;
+}
+
+.desktop-bg {
+  background:
+    radial-gradient(ellipse 70% 50% at 15% 20%, #e7edf2 0%, transparent 55%),
+    radial-gradient(ellipse 60% 45% at 85% 30%, var(--blue-pale) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 50% 90%, #dfe6ec 0%, transparent 65%),
+    linear-gradient(180deg, #e6eef4 0%, #dde3e9 100%);
+}
