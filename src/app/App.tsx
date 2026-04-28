@@ -10,8 +10,19 @@ import { ProjectsContent } from "./components/ProjectsContent";
 import { SkillsContent } from "./components/SkillsContent";
 import { ContactContent } from "./components/ContactContent";
 import { TerminalContent } from "./components/TerminalContent";
+import { ResumeContent } from "./components/ResumeContent";
+import { ExperienceContent } from "./components/ExperienceContent";
+import { LeadershipContent } from "./components/LeadershipContent";
 
-type WindowType = "about" | "projects" | "skills" | "contact" | "terminal";
+type WindowType =
+  | "about"
+  | "projects"
+  | "skills"
+  | "contact"
+  | "resumes"
+  | "experience"
+  | "leadership"
+  | "terminal";
 
 interface OpenWindow {
   id: WindowType;
@@ -23,14 +34,16 @@ interface OpenWindow {
 export default function App() {
   const [openWindows, setOpenWindows] = useState<OpenWindow[]>([]);
   const [maxZIndex, setMaxZIndex] = useState(10);
-  const [resetToken, setResetToken] = useState(0);
 
   const windowConfigs = {
     about: { title: "about.txt", component: <AboutContent /> },
     projects: { title: "projects/", component: <ProjectsContent /> },
     skills: { title: "skills.md", component: <SkillsContent /> },
     contact: { title: "contact", component: <ContactContent /> },
-    terminal: { title: "~/diana — terminal", component: <TerminalContent /> },
+    resumes: { title: "resumes/", component: <ResumeContent /> },
+    experience: { title: "experience/", component: <ExperienceContent /> },
+    leadership: { title: "leadership.md", component: <LeadershipContent /> },
+    terminal: { title: "~diana — terminal", component: <TerminalContent /> },
   };
 
   const openWindow = (type: WindowType) => {
@@ -67,8 +80,8 @@ export default function App() {
     setMaxZIndex((z) => z + 1);
   };
 
-  const resetWindowPositions = () => {
-    setResetToken((t) => t + 1);
+  const closeAllWindows = () => {
+    setOpenWindows([]);
   };
 
   const getWindowPosition = (index: number) => {
@@ -94,7 +107,7 @@ export default function App() {
             letterSpacing: "-0.02em",
           }}
         >
-          <span className="italic text-[var(--accent)]">~</span>/diana
+          <span className="italic text-[var(--accent)]">~</span>diana
         </h1>
         <p className="text-[11px] font-mono text-[var(--ink-soft)] tracking-wide">
           click a folder to explore
@@ -107,11 +120,18 @@ export default function App() {
         </p>
       </div>
 
-      <div className="absolute top-32 left-8 flex flex-col gap-4">
-        <DesktopIcon folderColor="blue" label="about" onClick={() => openWindow("about")} />
-        <DesktopIcon folderColor="blue-deep" label="projects" onClick={() => openWindow("projects")} />
-        <DesktopIcon folderColor="gray" label="skills" onClick={() => openWindow("skills")} />
-        <DesktopIcon folderColor="sage" label="contact" onClick={() => openWindow("contact")} />
+      <div className="absolute top-32 left-8 flex gap-4">
+        <div className="flex flex-col gap-4">
+          <DesktopIcon kind="text" tone="blue" label="about.txt" onClick={() => openWindow("about")} />
+          <DesktopIcon kind="folder" tone="blue-deep" label="projects" onClick={() => openWindow("projects")} />
+          <DesktopIcon kind="markdown" tone="gray" label="skills.md" onClick={() => openWindow("skills")} />
+          <DesktopIcon kind="folder" tone="sage" label="resumes" onClick={() => openWindow("resumes")} />
+          <DesktopIcon kind="mail" tone="blue" label="contact" onClick={() => openWindow("contact")} />
+        </div>
+        <div className="flex flex-col gap-4">
+          <DesktopIcon kind="folder" tone="gray" label="experience" onClick={() => openWindow("experience")} />
+          <DesktopIcon kind="markdown" tone="sage" label="leadership.md" onClick={() => openWindow("leadership")} />
+        </div>
       </div>
 
       <StickyNote />
@@ -126,7 +146,6 @@ export default function App() {
             initialPosition={getWindowPosition(index)}
             zIndex={window.zIndex}
             onFocus={() => bringToFront(window.id)}
-            resetToken={resetToken}
           >
             {window.component}
           </Window>
@@ -136,7 +155,8 @@ export default function App() {
       <Taskbar
         onOpenFolder={(type) => openWindow(type)}
         onOpenTerminal={() => openWindow("terminal")}
-        onResetWindows={resetWindowPositions}
+        onCloseAllWindows={closeAllWindows}
+        anyWindowOpen={openWindows.length > 0}
       />
     </div>
   );

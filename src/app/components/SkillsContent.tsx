@@ -1,37 +1,26 @@
-/**
- * Skills window.
- *
- * Two styles:
- * - Languages: progress bars (only this category — scope matters here)
- * - Everything else: pill tags grouped by category, with a legend showing
- *   the comfort levels (strong / comfortable / learning).
- */
+// Skills window. Pill tags grouped by category, with a legend
+// for comfort levels (strong / comfortable / learning).
 
 type Level = "strong" | "comfortable" | "learning";
-
-interface Language {
-  name: string;
-  // 0-100 fill for the bar
-  fill: number;
-  note?: string;
-}
 
 interface SkillGroup {
   title: string;
   items: { name: string; level: Level }[];
 }
 
-const languages: Language[] = [
-  { name: "Python", fill: 90, note: "primary language" },
-  { name: "TypeScript", fill: 85 },
-  { name: "JavaScript", fill: 85 },
-  { name: "HTML / CSS", fill: 85 },
-  { name: "SQL", fill: 65 },
-  { name: "C++", fill: 55, note: "coursework + embedded" },
-  { name: "Scheme / Racket", fill: 35, note: "EOPL, currently learning" },
-];
-
 const skillGroups: SkillGroup[] = [
+  {
+    title: "languages",
+    items: [
+      { name: "Python", level: "strong" },
+      { name: "TypeScript", level: "strong" },
+      { name: "JavaScript", level: "strong" },
+      { name: "HTML / CSS", level: "strong" },
+      { name: "SQL", level: "comfortable" },
+      { name: "C++", level: "comfortable" },
+      { name: "Scheme / Racket", level: "learning" },
+    ],
+  },
   {
     title: "frontend & design",
     items: [
@@ -110,24 +99,6 @@ export function SkillsContent() {
         </p>
       </div>
 
-      {/* Languages with progress bars */}
-      <section>
-        <h3
-          className="font-mono text-[11px] tracking-wider uppercase mb-3 pb-1"
-          style={{
-            color: "var(--ink-soft)",
-            borderBottom: "1px solid var(--blue-soft)",
-          }}
-        >
-          languages
-        </h3>
-        <div className="space-y-2.5">
-          {languages.map((lang) => (
-            <LanguageBar key={lang.name} lang={lang} />
-          ))}
-        </div>
-      </section>
-
       {/* Legend for pill colors */}
       <section
         className="p-2.5"
@@ -178,36 +149,6 @@ export function SkillsContent() {
         >
           picking up something new every semester.
         </p>
-      </div>
-    </div>
-  );
-}
-
-function LanguageBar({ lang }: { lang: Language }) {
-  return (
-    <div>
-      <div className="flex items-baseline justify-between mb-0.5">
-        <span className="font-mono text-[11px] text-[var(--ink)]">{lang.name}</span>
-        {lang.note && (
-          <span className="font-mono text-[9px] text-[var(--ink-soft)] italic">
-            {lang.note}
-          </span>
-        )}
-      </div>
-      <div
-        className="h-2 relative overflow-hidden"
-        style={{
-          background: "white",
-          border: "1px solid var(--ink)",
-        }}
-      >
-        <div
-          className="h-full transition-all"
-          style={{
-            width: `${lang.fill}%`,
-            background: "var(--accent)",
-          }}
-        />
       </div>
     </div>
   );

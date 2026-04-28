@@ -10,26 +10,40 @@ import {
   MailOpen,
   FileText,
   TerminalSquare,
-  RefreshCw,
+  XSquare,
+  Award,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect, useRef } from "react";
 
 function TikTokIcon({ size = 14 }: { size?: number }) {
+  // Outline style to match lucide stroke icons (stroke-width 2, round caps).
   return (
-    <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
-      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005.8 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.84-.1z" />
+    <svg
+      viewBox="0 0 24 24"
+      width={size}
+      height={size}
+      fill="none"
+      stroke="currentColor"
+      strokeWidth={2}
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
     </svg>
   );
 }
 
+type MenuFolder = "about" | "projects" | "skills" | "contact" | "resumes" | "experience" | "leadership";
+
 interface TaskbarProps {
-  onOpenFolder?: (type: "about" | "projects" | "skills" | "contact") => void;
+  onOpenFolder?: (type: MenuFolder) => void;
   onOpenTerminal?: () => void;
-  onResetWindows?: () => void;
+  onCloseAllWindows?: () => void;
+  anyWindowOpen?: boolean;
 }
 
-export function Taskbar({ onOpenFolder, onOpenTerminal, onResetWindows }: TaskbarProps) {
+export function Taskbar({ onOpenFolder, onOpenTerminal, onCloseAllWindows, anyWindowOpen }: TaskbarProps) {
   const [time, setTime] = useState(() =>
     new Date().toLocaleTimeString("en-US", {
       hour: "numeric",
@@ -79,6 +93,22 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onResetWindows }: Taskba
     },
     {
       icon: Briefcase,
+      label: "experience",
+      onClick: () => {
+        onOpenFolder?.("experience");
+        setStartOpen(false);
+      },
+    },
+    {
+      icon: Award,
+      label: "leadership",
+      onClick: () => {
+        onOpenFolder?.("leadership");
+        setStartOpen(false);
+      },
+    },
+    {
+      icon: Folder,
       label: "projects",
       onClick: () => {
         onOpenFolder?.("projects");
@@ -90,6 +120,14 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onResetWindows }: Taskba
       label: "skills",
       onClick: () => {
         onOpenFolder?.("skills");
+        setStartOpen(false);
+      },
+    },
+    {
+      icon: FileText,
+      label: "resumes",
+      onClick: () => {
+        onOpenFolder?.("resumes");
         setStartOpen(false);
       },
     },
@@ -129,7 +167,7 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onResetWindows }: Taskba
       {/* Start button + menu */}
       <div className="relative" ref={menuRef}>
         <motion.button
-          className="flex items-center gap-1.5 px-2.5 py-1 transition-colors"
+          className="h-7 inline-flex items-center gap-1.5 px-2.5 leading-none transition-colors"
           style={{
             border: "1.5px solid var(--ink)",
             background: startOpen ? "var(--blue-pale)" : "white",
@@ -138,7 +176,7 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onResetWindows }: Taskba
           onClick={() => setStartOpen((o) => !o)}
         >
           <Folder size={13} className="text-[var(--ink)]" strokeWidth={1.8} />
-          <span className="text-[var(--ink)] font-mono text-[11px] font-medium">Start</span>
+          <span className="text-[var(--ink)] font-mono text-[11px] font-medium">Menu</span>
         </motion.button>
 
         <AnimatePresence>
@@ -163,7 +201,7 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onResetWindows }: Taskba
                   color: "var(--ink-soft)",
                 }}
               >
-                ~/diana
+                ~diana
               </div>
 
               <div className="py-1">
@@ -185,26 +223,16 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onResetWindows }: Taskba
               />
 
               <div className="py-1">
-                <a
-                  href="/resume.pdf"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-[var(--blue-pale)] transition-colors"
-                  onClick={() => setStartOpen(false)}
-                >
-                  <FileText size={13} strokeWidth={1.8} />
-                  <span className="font-mono text-[11px]">resume ↓</span>
-                </a>
-
                 <button
                   onClick={() => {
-                    onResetWindows?.();
+                    onCloseAllWindows?.();
                     setStartOpen(false);
                   }}
-                  className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-[var(--blue-pale)] transition-colors text-left"
+                  disabled={!anyWindowOpen}
+                  className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-[var(--blue-pale)] transition-colors text-left disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed"
                 >
-                  <RefreshCw size={13} strokeWidth={1.8} />
-                  <span className="font-mono text-[11px]">reset windows</span>
+                  <XSquare size={13} strokeWidth={1.8} />
+                  <span className="font-mono text-[11px]">close all windows</span>
                 </button>
               </div>
             </motion.div>
@@ -214,7 +242,7 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onResetWindows }: Taskba
 
       {/* Terminal button */}
       <motion.button
-        className="flex items-center gap-1.5 px-2.5 py-1 bg-white hover:bg-[var(--blue-pale)] transition-colors"
+        className="h-7 inline-flex items-center gap-1.5 px-2.5 leading-none bg-white hover:bg-[var(--blue-pale)] transition-colors"
         style={{ border: "1.5px solid var(--ink)" }}
         whileTap={{ scale: 0.98 }}
         onClick={() => onOpenTerminal?.()}
@@ -231,7 +259,7 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onResetWindows }: Taskba
             return (
               <div
                 key={`div-${i}`}
-                className="w-px h-[18px] mx-1 opacity-25"
+                className="w-px h-4 mx-1 opacity-25"
                 style={{ background: "var(--ink)" }}
               />
             );
@@ -248,7 +276,7 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onResetWindows }: Taskba
               target="_blank"
               rel="noopener noreferrer"
               title={label}
-              className="w-[30px] h-[30px] bg-white flex items-center justify-center text-[var(--ink)] transition-all"
+              className="h-7 w-7 inline-flex items-center justify-center bg-white text-[var(--ink)] transition-all"
               style={{ border: "1.5px solid var(--ink)" }}
               whileHover={{
                 scale: 1.05,
@@ -265,7 +293,7 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onResetWindows }: Taskba
 
       {/* Clock */}
       <div
-        className="px-2.5 py-1 bg-white ml-2"
+        className="h-7 inline-flex items-center px-2.5 leading-none bg-white ml-2"
         style={{ border: "1.5px solid var(--ink)" }}
       >
         <span className="text-[var(--ink)] font-mono text-[11px]">{time}</span>

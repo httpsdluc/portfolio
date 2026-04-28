@@ -9,7 +9,6 @@ interface WindowProps {
   initialPosition?: { x: number; y: number };
   zIndex?: number;
   onFocus?: () => void;
-  resetToken?: number;
 }
 
 export function Window({
@@ -19,20 +18,10 @@ export function Window({
   initialPosition = { x: 100, y: 100 },
   zIndex = 10,
   onFocus,
-  resetToken,
 }: WindowProps) {
   const x = useMotionValue(initialPosition.x);
   const y = useMotionValue(initialPosition.y);
   const windowRef = useRef<HTMLDivElement>(null);
-
-  // Reset position when token changes
-  useEffect(() => {
-    if (resetToken !== undefined) {
-      animate(x, initialPosition.x, { type: "spring", stiffness: 300, damping: 30 });
-      animate(y, initialPosition.y, { type: "spring", stiffness: 300, damping: 30 });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [resetToken]);
 
   const clampPosition = (rawX: number, rawY: number) => {
     const el = windowRef.current;
