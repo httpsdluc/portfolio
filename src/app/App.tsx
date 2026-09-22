@@ -5,6 +5,7 @@ import { DesktopIcon } from "./components/DesktopIcon";
 import { Taskbar } from "./components/Taskbar";
 import { StickyNote } from "./components/StickyNote";
 import { Luna } from "./components/Luna";
+import { useIsMobile } from "./components/ui/use-mobile";
 import { AboutContent } from "./components/AboutContent";
 import { ProjectsContent } from "./components/ProjectsContent";
 import { SkillsContent } from "./components/SkillsContent";
@@ -34,6 +35,7 @@ interface OpenWindow {
 export default function App() {
   const [openWindows, setOpenWindows] = useState<OpenWindow[]>([]);
   const [maxZIndex, setMaxZIndex] = useState(10);
+  const isMobile = useIsMobile();
 
   const windowConfigs = {
     about: { title: "about.txt", component: <AboutContent /> },
@@ -89,6 +91,21 @@ export default function App() {
     return { x: 200 + offset, y: 110 + offset };
   };
 
+  const desktopIcons: Array<{
+    kind: "text" | "folder" | "markdown" | "mail";
+    tone: "blue" | "blue-deep" | "gray" | "sage";
+    label: string;
+    type: WindowType;
+  }> = [
+    { kind: "text", tone: "blue", label: "about.txt", type: "about" },
+    { kind: "folder", tone: "blue-deep", label: "projects", type: "projects" },
+    { kind: "markdown", tone: "gray", label: "skills.md", type: "skills" },
+    { kind: "folder", tone: "sage", label: "resumes", type: "resumes" },
+    { kind: "mail", tone: "blue", label: "contact", type: "contact" },
+    { kind: "folder", tone: "gray", label: "experience", type: "experience" },
+    { kind: "markdown", tone: "sage", label: "leadership.md", type: "leadership" },
+  ];
+
   return (
     <div className="size-full relative overflow-hidden desktop-bg">
       <div
@@ -98,9 +115,9 @@ export default function App() {
         }}
       />
 
-      <div className="absolute top-7 left-1/2 -translate-x-1/2 text-center pointer-events-none z-[5]">
+      <div className="absolute top-5 sm:top-7 left-1/2 -translate-x-1/2 text-center pointer-events-none z-[5] px-4 w-full">
         <h1
-          className="text-[34px] mb-0.5 text-[var(--ink)]"
+          className="text-[26px] sm:text-[34px] mb-0.5 text-[var(--ink)]"
           style={{
             fontFamily: "'Fraunces', serif",
             fontWeight: 500,
@@ -109,33 +126,64 @@ export default function App() {
         >
           <span className="italic text-[var(--accent)]">~</span>diana
         </h1>
-        <p className="text-[11px] font-mono text-[var(--ink-soft)] tracking-wide">
-          click a folder to explore
+        <p className="text-[10px] sm:text-[11px] font-mono text-[var(--ink-soft)] tracking-wide">
+          {isMobile ? "tap a folder to explore" : "click a folder to explore"}
         </p>
         <p
-          className="text-[13px] italic mt-1 text-[var(--ink-soft)]"
+          className="text-[11px] sm:text-[13px] italic mt-1 text-[var(--ink-soft)]"
           style={{ fontFamily: "'Fraunces', serif" }}
         >
           open to summer &apos;26 internships &amp; conference sponsorships
         </p>
       </div>
 
-      <div className="absolute top-32 left-8 flex gap-4">
-        <div className="flex flex-col gap-4">
-          <DesktopIcon kind="text" tone="blue" label="about.txt" onClick={() => openWindow("about")} />
-          <DesktopIcon kind="folder" tone="blue-deep" label="projects" onClick={() => openWindow("projects")} />
-          <DesktopIcon kind="markdown" tone="gray" label="skills.md" onClick={() => openWindow("skills")} />
-          <DesktopIcon kind="folder" tone="sage" label="resumes" onClick={() => openWindow("resumes")} />
-          <DesktopIcon kind="mail" tone="blue" label="contact" onClick={() => openWindow("contact")} />
+      {isMobile ? (
+        <div className="absolute top-[124px] left-0 right-0 bottom-12 overflow-y-auto px-4">
+          <div className="grid grid-cols-3 gap-x-1 gap-y-3 justify-items-center max-w-sm mx-auto">
+            {desktopIcons.map((icon) => (
+              <DesktopIcon
+                key={icon.type}
+                kind={icon.kind}
+                tone={icon.tone}
+                label={icon.label}
+                onClick={() => openWindow(icon.type)}
+              />
+            ))}
+          </div>
         </div>
-        <div className="flex flex-col gap-4">
-          <DesktopIcon kind="folder" tone="gray" label="experience" onClick={() => openWindow("experience")} />
-          <DesktopIcon kind="markdown" tone="sage" label="leadership.md" onClick={() => openWindow("leadership")} />
+      ) : (
+        <div className="absolute top-32 left-8 flex gap-4">
+          <div className="flex flex-col gap-4">
+            {desktopIcons.slice(0, 5).map((icon) => (
+              <DesktopIcon
+                key={icon.type}
+                kind={icon.kind}
+                tone={icon.tone}
+                label={icon.label}
+                onClick={() => openWindow(icon.type)}
+              />
+            ))}
+          </div>
+          <div className="flex flex-col gap-4">
+            {desktopIcons.slice(5).map((icon) => (
+              <DesktopIcon
+                key={icon.type}
+                kind={icon.kind}
+                tone={icon.tone}
+                label={icon.label}
+                onClick={() => openWindow(icon.type)}
+              />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
 
-      <StickyNote />
-      <Luna />
+      {!isMobile && (
+        <>
+          <StickyNote />
+          <Luna />
+        </>
+      )}
 
       <AnimatePresence>
         {openWindows.map((window, index) => (
@@ -146,6 +194,7 @@ export default function App() {
             initialPosition={getWindowPosition(index)}
             zIndex={window.zIndex}
             onFocus={() => bringToFront(window.id)}
+            isMobile={isMobile}
           >
             {window.component}
           </Window>
@@ -157,6 +206,7 @@ export default function App() {
         onOpenTerminal={() => openWindow("terminal")}
         onCloseAllWindows={closeAllWindows}
         anyWindowOpen={openWindows.length > 0}
+        isMobile={isMobile}
       />
     </div>
   );

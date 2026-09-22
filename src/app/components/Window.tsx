@@ -9,6 +9,7 @@ interface WindowProps {
   initialPosition?: { x: number; y: number };
   zIndex?: number;
   onFocus?: () => void;
+  isMobile?: boolean;
 }
 
 export function Window({
@@ -18,6 +19,7 @@ export function Window({
   initialPosition = { x: 100, y: 100 },
   zIndex = 10,
   onFocus,
+  isMobile = false,
 }: WindowProps) {
   const x = useMotionValue(initialPosition.x);
   const y = useMotionValue(initialPosition.y);
@@ -45,6 +47,7 @@ export function Window({
 
   // On resize, clamp windows back in
   useEffect(() => {
+    if (isMobile) return;
     const handler = () => {
       const clamped = clampPosition(x.get(), y.get());
       animate(x, clamped.x, { duration: 0.2 });
@@ -53,7 +56,53 @@ export function Window({
     window.addEventListener("resize", handler);
     return () => window.removeEventListener("resize", handler);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [isMobile]);
+
+  if (isMobile) {
+    return (
+      <motion.div
+        ref={windowRef}
+        className="fixed bg-white overflow-hidden flex flex-col"
+        style={{
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 40,
+          zIndex,
+          borderTop: "2px solid var(--ink)",
+        }}
+        initial={{ y: "100%" }}
+        animate={{ y: 0 }}
+        exit={{ y: "100%" }}
+        transition={{ duration: 0.2, ease: "easeOut" }}
+        onClick={onFocus}
+      >
+        <div
+          className="px-4 py-3 flex items-center justify-between select-none shrink-0"
+          style={{
+            background: "#e8ecf0",
+            borderBottom: "2px solid var(--ink)",
+          }}
+        >
+          <span className="font-mono text-[12px] tracking-wide text-[var(--ink)] font-medium">
+            {title}
+          </span>
+          <button
+            className="w-9 h-9 -mr-1.5 border-[1.5px] border-[var(--ink)] bg-white active:bg-[#f0c8c8] flex items-center justify-center transition-colors"
+            onClick={(e) => {
+              e.stopPropagation();
+              onClose();
+            }}
+            aria-label="Close"
+          >
+            <X size={16} className="text-[var(--ink)]" strokeWidth={2.2} />
+          </button>
+        </div>
+
+        <div className="p-4 overflow-y-auto bg-white grow">{children}</div>
+      </motion.div>
+    );
+  }
 
   return (
     <motion.div

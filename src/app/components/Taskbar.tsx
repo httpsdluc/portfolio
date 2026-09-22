@@ -41,9 +41,10 @@ interface TaskbarProps {
   onOpenTerminal?: () => void;
   onCloseAllWindows?: () => void;
   anyWindowOpen?: boolean;
+  isMobile?: boolean;
 }
 
-export function Taskbar({ onOpenFolder, onOpenTerminal, onCloseAllWindows, anyWindowOpen }: TaskbarProps) {
+export function Taskbar({ onOpenFolder, onOpenTerminal, onCloseAllWindows, anyWindowOpen, isMobile = false }: TaskbarProps) {
   const [time, setTime] = useState(() =>
     new Date().toLocaleTimeString("en-US", {
       hour: "numeric",
@@ -167,7 +168,7 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onCloseAllWindows, anyWi
       {/* Start button + menu */}
       <div className="relative" ref={menuRef}>
         <motion.button
-          className="h-7 inline-flex items-center gap-1.5 px-2.5 leading-none transition-colors"
+          className={`inline-flex items-center gap-1.5 px-2.5 leading-none transition-colors ${isMobile ? "h-9" : "h-7"}`}
           style={{
             border: "1.5px solid var(--ink)",
             background: startOpen ? "var(--blue-pale)" : "white",
@@ -186,11 +187,11 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onCloseAllWindows, anyWi
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: 4, scale: 0.98 }}
               transition={{ duration: 0.12 }}
-              className="absolute bottom-full mb-2 left-0 bg-white"
+              className="absolute bottom-full mb-2 left-0 bg-white max-h-[70vh] overflow-y-auto"
               style={{
                 border: "2px solid var(--ink)",
                 boxShadow: "4px 4px 0 rgba(30,38,51,0.12)",
-                minWidth: 200,
+                minWidth: isMobile ? 220 : 200,
               }}
             >
               <div
@@ -209,7 +210,7 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onCloseAllWindows, anyWi
                   <button
                     key={item.label}
                     onClick={item.onClick}
-                    className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-[var(--blue-pale)] transition-colors text-left"
+                    className={`w-full flex items-center gap-2.5 px-3 hover:bg-[var(--blue-pale)] active:bg-[var(--blue-pale)] transition-colors text-left ${isMobile ? "py-2.5" : "py-1.5"}`}
                   >
                     <item.icon size={13} strokeWidth={1.8} />
                     <span className="font-mono text-[11px]">{item.label}</span>
@@ -229,12 +230,38 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onCloseAllWindows, anyWi
                     setStartOpen(false);
                   }}
                   disabled={!anyWindowOpen}
-                  className="w-full flex items-center gap-2.5 px-3 py-1.5 hover:bg-[var(--blue-pale)] transition-colors text-left disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed"
+                  className={`w-full flex items-center gap-2.5 px-3 hover:bg-[var(--blue-pale)] transition-colors text-left disabled:opacity-40 disabled:hover:bg-transparent disabled:cursor-not-allowed ${isMobile ? "py-2.5" : "py-1.5"}`}
                 >
                   <XSquare size={13} strokeWidth={1.8} />
                   <span className="font-mono text-[11px]">close all windows</span>
                 </button>
               </div>
+
+              {isMobile && (
+                <>
+                  <div
+                    className="mx-3 my-1 border-t"
+                    style={{ borderColor: "var(--blue-soft)" }}
+                  />
+                  <div className="flex gap-2 px-3 py-2.5 items-center flex-wrap">
+                    {socials
+                      .filter((item): item is { href: string; label: string; Icon: React.ComponentType<{ size?: number }> } => !("type" in item))
+                      .map(({ href, label, Icon }) => (
+                        <a
+                          key={label}
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          title={label}
+                          className="h-9 w-9 inline-flex items-center justify-center bg-white text-[var(--ink)] active:bg-[var(--blue-pale)]"
+                          style={{ border: "1.5px solid var(--ink)" }}
+                        >
+                          <Icon size={15} />
+                        </a>
+                      ))}
+                  </div>
+                </>
+              )}
             </motion.div>
           )}
         </AnimatePresence>
@@ -242,7 +269,7 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onCloseAllWindows, anyWi
 
       {/* Terminal button */}
       <motion.button
-        className="h-7 inline-flex items-center gap-1.5 px-2.5 leading-none bg-white hover:bg-[var(--blue-pale)] transition-colors"
+        className={`inline-flex items-center gap-1.5 px-2.5 leading-none bg-white hover:bg-[var(--blue-pale)] transition-colors ${isMobile ? "h-9" : "h-7"}`}
         style={{ border: "1.5px solid var(--ink)" }}
         whileTap={{ scale: 0.98 }}
         onClick={() => onOpenTerminal?.()}
@@ -252,52 +279,65 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onCloseAllWindows, anyWi
         <span className="text-[var(--ink)] font-mono text-[11px] font-medium">Terminal</span>
       </motion.button>
 
-      {/* Social Icons - right aligned */}
-      <div className="ml-auto flex gap-1.5 items-center">
-        {socials.map((item, i) => {
-          if ("type" in item && item.type === "divider") {
-            return (
-              <div
-                key={`div-${i}`}
-                className="w-px h-4 mx-1 opacity-25"
-                style={{ background: "var(--ink)" }}
-              />
-            );
-          }
-          const { href, label, Icon } = item as {
-            href: string;
-            label: string;
-            Icon: React.ComponentType<{ size?: number }>;
-          };
-          return (
-            <motion.a
-              key={label}
-              href={href}
-              target="_blank"
-              rel="noopener noreferrer"
-              title={label}
-              className="h-7 w-7 inline-flex items-center justify-center bg-white text-[var(--ink)] transition-all"
-              style={{ border: "1.5px solid var(--ink)" }}
-              whileHover={{
-                scale: 1.05,
-                boxShadow: "2px 2px 0 rgba(30,38,51,0.2)",
-                backgroundColor: "var(--blue-pale)",
-              }}
-              whileTap={{ scale: 0.95 }}
-            >
-              <Icon size={14} />
-            </motion.a>
-          );
-        })}
-      </div>
+      {!isMobile && (
+        <>
+          {/* Social Icons - right aligned */}
+          <div className="ml-auto flex gap-1.5 items-center">
+            {socials.map((item, i) => {
+              if ("type" in item && item.type === "divider") {
+                return (
+                  <div
+                    key={`div-${i}`}
+                    className="w-px h-4 mx-1 opacity-25"
+                    style={{ background: "var(--ink)" }}
+                  />
+                );
+              }
+              const { href, label, Icon } = item as {
+                href: string;
+                label: string;
+                Icon: React.ComponentType<{ size?: number }>;
+              };
+              return (
+                <motion.a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  title={label}
+                  className="h-7 w-7 inline-flex items-center justify-center bg-white text-[var(--ink)] transition-all"
+                  style={{ border: "1.5px solid var(--ink)" }}
+                  whileHover={{
+                    scale: 1.05,
+                    boxShadow: "2px 2px 0 rgba(30,38,51,0.2)",
+                    backgroundColor: "var(--blue-pale)",
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <Icon size={14} />
+                </motion.a>
+              );
+            })}
+          </div>
 
-      {/* Clock */}
-      <div
-        className="h-7 inline-flex items-center px-2.5 leading-none bg-white ml-2"
-        style={{ border: "1.5px solid var(--ink)" }}
-      >
-        <span className="text-[var(--ink)] font-mono text-[11px]">{time}</span>
-      </div>
+          {/* Clock */}
+          <div
+            className="h-7 inline-flex items-center px-2.5 leading-none bg-white ml-2"
+            style={{ border: "1.5px solid var(--ink)" }}
+          >
+            <span className="text-[var(--ink)] font-mono text-[11px]">{time}</span>
+          </div>
+        </>
+      )}
+
+      {isMobile && (
+        <div
+          className="h-9 ml-auto inline-flex items-center px-2.5 leading-none bg-white"
+          style={{ border: "1.5px solid var(--ink)" }}
+        >
+          <span className="text-[var(--ink)] font-mono text-[11px]">{time}</span>
+        </div>
+      )}
     </motion.div>
   );
 }
