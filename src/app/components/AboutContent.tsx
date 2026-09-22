@@ -8,17 +8,17 @@ export function AboutContent() {
       {/* Centered avatar + name */}
       <div className="text-center">
       <div
-        className="w-28 h-28 mx-auto mb-4 border-2 overflow-hidden"
+        className="w-28 mx-auto mb-4 border-2 overflow-hidden"
         style={{
+          aspectRatio: "213 / 357",
           borderColor: "var(--ink)",
           background: "var(--blue-pale)",
-          imageRendering: "pixelated",
         }}
       >
         <img
           src="/pixel-me.png"
           alt="Diana (pixel portrait)"
-          className="w-full h-full object-contain"
+          className="w-full h-full object-cover"
           style={{ imageRendering: "pixelated" }}
         />
       </div>
