@@ -1,17 +1,9 @@
-import { Mail, Github, Linkedin, Instagram, Send, FileText } from "lucide-react";
+import { Mail, Github, Linkedin, Send, FileText } from "lucide-react";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Label } from "./ui/label";
 import { useState } from "react";
-
-function TikTokIcon({ size = 14 }: { size?: number }) {
-  return (
-    <svg viewBox="0 0 24 24" width={size} height={size} fill="currentColor">
-      <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005.8 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1.84-.1z" />
-    </svg>
-  );
-}
 
 export function ContactContent() {
   const [name, setName] = useState("");
@@ -22,8 +14,6 @@ export function ContactContent() {
     { Icon: Mail, label: "Email", url: "mailto:dlucero0715@gmail.com" },
     { Icon: Linkedin, label: "LinkedIn", url: "https://www.linkedin.com/in/dlucero0715" },
     { Icon: Github, label: "GitHub", url: "https://github.com/httpsdluc" },
-    { Icon: Instagram, label: "Instagram", url: "https://www.instagram.com/sweetlyintech/" },
-    { Icon: TikTokIcon, label: "TikTok", url: "https://www.tiktok.com/@sweetlyintech" },
     { Icon: FileText, label: "Resume", url: "/resume.pdf" },
   ];
 

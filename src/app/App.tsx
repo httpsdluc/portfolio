@@ -133,7 +133,7 @@ export default function App() {
           className="text-[11px] sm:text-[13px] italic mt-1 text-[var(--ink-soft)]"
           style={{ fontFamily: "'Fraunces', serif" }}
         >
-          open to summer &apos;26 internships &amp; conference sponsorships
+          open to full-time new grad roles (May &apos;27) &amp; conference sponsorships
         </p>
       </div>
 

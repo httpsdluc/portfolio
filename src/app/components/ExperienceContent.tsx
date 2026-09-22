@@ -11,6 +11,26 @@ interface Role {
 
 const roles: Role[] = [
   {
+    company: "NYC Department of Transportation",
+    title: "Software & Data Intern, Traffic Management Center",
+    dates: "Sep 2026 – Present",
+    location: "New York City, NY",
+    blurb:
+      "Learning how software, data, and infrastructure come together in intelligent transportation systems and public-sector technology at city scale.",
+  },
+  {
+    company: "ClearVerse AI",
+    title: "AI Data Science Intern",
+    dates: "Jun – Aug 2026",
+    location: "New York City, NY",
+    blurb:
+      "Worked across AI, data science, ML, and emerging tech through the NYC Startup Internship Program (Company Ventures).",
+    highlights: [
+      "Hands-on with AI systems, data analysis, model evaluation, technical research, and responsible AI",
+      "Practiced experimentation, documentation, and cross-team collaboration on real-world data",
+    ],
+  },
+  {
     company: "Google",
     title: "Software & AI Engineering Intern",
     dates: "Jun – Jul 2025",

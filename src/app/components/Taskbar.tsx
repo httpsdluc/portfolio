@@ -2,7 +2,6 @@ import {
   Github,
   Mail,
   Linkedin,
-  Instagram,
   Folder,
   User,
   Briefcase,
@@ -15,24 +14,6 @@ import {
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useState, useEffect, useRef } from "react";
-
-function TikTokIcon({ size = 14 }: { size?: number }) {
-  // Outline style to match lucide stroke icons (stroke-width 2, round caps).
-  return (
-    <svg
-      viewBox="0 0 24 24"
-      width={size}
-      height={size}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth={2}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
-    </svg>
-  );
-}
 
 type MenuFolder = "about" | "projects" | "skills" | "contact" | "resumes" | "experience" | "leadership";
 
@@ -147,9 +128,6 @@ export function Taskbar({ onOpenFolder, onOpenTerminal, onCloseAllWindows, anyWi
     { href: "https://www.linkedin.com/in/dlucero0715", label: "LinkedIn", Icon: Linkedin },
     { type: "divider" as const },
     { href: "mailto:dlucero0715@gmail.com", label: "Email", Icon: Mail },
-    { type: "divider" as const },
-    { href: "https://www.instagram.com/sweetlyintech/", label: "Instagram", Icon: Instagram },
-    { href: "https://www.tiktok.com/@sweetlyintech", label: "TikTok", Icon: TikTokIcon },
   ];
 
   return (

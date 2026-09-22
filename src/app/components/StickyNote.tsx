@@ -7,9 +7,9 @@ import { motion } from "motion/react";
 export function StickyNote() {
   const items = [
     "building Solace",
-    "debugging rocket radio",
-    "studying EOPL",
-    "reading every K-pop era",
+    "NAR L1 certified 🚀",
+    "open-source contributing",
+    "hunting new grad roles ('27)",
   ];
 
   return (

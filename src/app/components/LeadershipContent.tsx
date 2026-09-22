@@ -30,7 +30,7 @@ const leadership: Role[] = [
   {
     title: "Social Media Chair",
     org: "Association for Computing Machinery (ACM) · CCNY",
-    dates: "Sep 2024 – Present",
+    dates: "Sep 2024 – May 2026",
     blurb:
       "Manage social presence and content to promote technical events, workshops, and opportunities.",
   },
@@ -38,18 +38,25 @@ const leadership: Role[] = [
 
 const fellowships: Role[] = [
   {
-    title: "Selected Participant",
-    org: "Bloomberg Women in Data Program · NYC",
-    dates: "Mar 2026 – Present",
+    title: "Web Development Fellow",
+    org: "CUNY Tech Prep",
+    dates: "Sep 2026 – Present",
     blurb:
-      "Analyze real-world financial datasets in Python (pandas, NumPy) and present data-driven insights to Bloomberg engineers. Exposure to real-time data pipelines, modeling, and analytics workflows.",
+      "Developing web development skills alongside other CUNY students pursuing careers in tech.",
+  },
+  {
+    title: "Graduate",
+    org: "Break Through Tech — Machine Learning Foundations",
+    dates: "Aug 2026",
+    blurb:
+      "Completed the summer course, strengthening my understanding of building, evaluating, and improving machine learning models.",
   },
   {
     title: "Selected Participant",
-    org: "Bloomberg Women in Data Forum · Princeton, NJ",
-    dates: "Mar 2026",
+    org: "Bloomberg Women in Data Program & Forum · NYC / Princeton, NJ",
+    dates: "Mar – May 2026",
     blurb:
-      "Mentorship sessions and technical workshops at Bloomberg's Data HQ exploring large-scale financial data systems.",
+      "Analyzed real-world financial datasets in Python (pandas, NumPy) and presented data-driven insights to Bloomberg engineers; attended the Women in Data Forum at Bloomberg's Princeton Data HQ for mentorship sessions and technical workshops on large-scale financial data systems.",
   },
   {
     title: "Fellow",
@@ -82,6 +89,26 @@ const fellowships: Role[] = [
 ];
 
 const recognition: Role[] = [
+  {
+    title: "NAR Level 1 High Power Rocketry Certification",
+    org: "National Association of Rocketry",
+    dates: "Aug 2026",
+    blurb: "Certified to build and fly high-power rockets.",
+  },
+  {
+    title: "Selected Participant",
+    org: "MLT Career Prep Summer Seminar · Deloitte University",
+    dates: "Aug 2026",
+    blurb:
+      "Connected with an incredible professional community and reflected intentionally on the professional I want to become.",
+  },
+  {
+    title: "Attendee",
+    org: "MLH DevCon 2026",
+    dates: "2026",
+    blurb:
+      "Learned from developers building, sharing knowledge, and contributing to the broader tech community.",
+  },
   {
     title: "Top 50 Global Finalist",
     org: "IBM TechXchange Hackathon",
@@ -128,7 +155,7 @@ export function LeadershipContent() {
           className="text-[12px] italic"
           style={{ fontFamily: "'Fraunces', serif", color: "var(--ink-soft)" }}
         >
-          juntas llegamos m&aacute;s lejos.
+          further, together.
         </p>
       </div>
     </div>

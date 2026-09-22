@@ -53,18 +53,21 @@ export function AboutContent() {
           in the world, you can just <em>build it</em>.
         </p>
         <p className="text-[var(--ink-soft)] leading-relaxed text-xs">
-          In the two years since, I spent a summer at Google building GenAI
+          In the years since, I spent a summer at Google building GenAI
           tools through the Break Through Tech Cloud Sprinternship, placed Top
           50 globally at IBM TechXchange with a multi-agent resume optimizer,
-          and made the live finals at YHack with an AI investment agent.
-          I&apos;m drawn to problems at the intersection of AI, product
-          thinking, and design that makes software feel like it belongs to
-          the person using it.
+          made the live finals at YHack with an AI investment agent, and
+          interned at ClearVerse AI as an AI Data Science Intern through the
+          NYC Startup Internship Program. I&apos;m drawn to problems at the
+          intersection of AI, product thinking, and design that makes
+          software feel like it belongs to the person using it.
         </p>
         <p className="text-[var(--ink-soft)] leading-relaxed text-xs">
-          Right now I&apos;m writing firmware for a rocket, building a social
-          reading app called Solace, and looking for summer &apos;26
-          internships where I can keep learning in public.
+          Right now I&apos;m interning at the NYC Department of
+          Transportation&apos;s Traffic Management Center, building Solace,
+          freshly NAR Level 1 certified in high-power rocketry, and dipping
+          into open-source contributions &mdash; while looking for full-time
+          new grad roles starting May 2027.
         </p>
       </div>
 
@@ -113,7 +116,7 @@ export function AboutContent() {
           </li>
           <li className="flex items-start gap-2">
             <span className="text-[var(--accent)]">▸</span>
-            <span>first gen &amp; proud latina in tech — porque juntas llegamos más lejos</span>
+            <span>first gen &amp; proud latina in tech</span>
           </li>
           <li className="flex items-start gap-2">
             <span className="text-[var(--accent)]">▸</span>
@@ -121,7 +124,7 @@ export function AboutContent() {
           </li>
           <li className="flex items-start gap-2">
             <span className="text-[var(--accent)]">▸</span>
-            <span>currently debugging a radio for a rocket</span>
+            <span>NAR Level 1 certified in high-power rocketry 🚀</span>
           </li>
           <li className="flex items-start gap-2">
             <span className="text-[var(--accent)]">▸</span>
